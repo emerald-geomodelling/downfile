@@ -22,7 +22,7 @@ Example usage:
  'fie': 'hello'}
  ```
 
-# How to add data formats
+# How to add data types / formats
 
 In setup.py in your own package add:
 
