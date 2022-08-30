@@ -18,9 +18,19 @@ setuptools.setup(
     install_requires=[
         "pandas",
     ],
-#    entry_points = {
-#        'serializers': ['pandas.DataFrame=downfile.formats.pandas:to_feather'],
-#        'deserializers': ['feather=downfile.formats.pandas:from_feather'],
-#    }
+    entry_points = {
+        'downfile.dumpers': [
+            'json=downfile.formats.format_json:to_json',
+            'datetime.datetime=downfile.formats.format_datetime:datetime_to_json',
+            'datetime.date=downfile.formats.format_datetime:date_to_json',
+            'pandas.core.frame.DataFrame=downfile.formats.format_pandas:to_feather',
+        ],
+        'downfile.parsers': [
+            'json=downfile.formats.format_json:from_json',
+            'datetime.datetime=downfile.formats.format_datetime:datetime_from_json',
+            'datetime.date=downfile.formats.format_datetime:date_from_json',
+            'feather=downfile.formats.format_pandas:from_feather',
+        ],
+    }
     
 )
