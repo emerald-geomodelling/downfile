@@ -19,3 +19,34 @@ Example usage:
  2    3,
  'fie': 'hello'}
  ```
+
+# How to add data formats
+
+In setup.py in your own package add:
+
+```
+entry_points = {
+    'downfile.dumpers': [
+        'somepackage.somemodule.DataType=mypackage.mymodule:dumper',
+    ],
+    'downfile.parsers': [
+        'myformat=mypackage.mymodule:parser',
+    ]}
+```
+
+then in `mypackage.mymodule` provide the following two methods
+
+```
+def dumper(downfile, obj):
+    name = downfile.new_file("myformat") # myformat is the filename extension
+    with downfile.open_buffered(name, "w") as f:
+        someFunctionToWriteObjToFile(f)
+    return {"__jsonclass__": ["myformat", [name]]} # myformat is the key used to find `parser` in setp.py later
+
+def parser(downfile, obj):    
+    obj = obj["__jsonclass__"][1][0]
+    with downfile.open_buffered(obj, "r") as f:
+        return someFunctionToReadObjFromFile(f)
+```
+
+`myformat` can be any string that is reasonably unique, typically the file extension used by the file format your're using for serialization.
