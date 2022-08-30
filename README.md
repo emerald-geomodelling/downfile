@@ -54,3 +54,15 @@ def parser(downfile, obj):
 `myformat` can be any string that is reasonably unique, typically the file extension used by the file format your're using for serialization.
 
 If you're familiar with JSON RPC class hinting, you're probably wondering if dumper really has to write a file, or if it could just return some JSONifyable data. And the answer is nope, it doesn't need to write a file. If you're curious about serializing small objects, check out [the datetime handler](downfile/formats/format_datetime.py).
+
+# Data format details
+
+* A Downfile is a zip file
+* A Downfile must contain a JSON file named `0.json`
+  * This JSON file must contain an object with a key `root`
+  * The content of the `root` key is considered the content of the entire Downfile.
+* Any file inside a Downfile can reference additional files inside the Downfile using relative paths
+
+* Any JSON file inside a Downfile can use [JSON RPC 1.0 class hinting](https://www.jsonrpc.org/specification_v1#a3.JSONClasshinting)
+* A class hint of `{"__jsonclass__": ["file-format-name", ["filename.ext"]]}` must be used for data that is stored in a separate file inside the Downfile
+
