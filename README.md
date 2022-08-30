@@ -5,6 +5,8 @@ The format of each component is some standard format, such as JSON (for dictiona
 
 To serialize or deserialize new types, methods can be registered using setuptools entry_points.
 
+Since a (de)serializer has to be written manually for each type, it does not have the same security and compatibility issues that Pickle has, but instead comes with a slightly higher development overhead.
+
 Example usage:
 
 ```
