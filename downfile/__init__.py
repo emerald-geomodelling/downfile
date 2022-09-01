@@ -6,32 +6,23 @@ import contextlib
 import shutil
 import tempfile
 import importlib.metadata
-
-def load_fn(name):
-    mod, fn = name.rsplit(".", 1)
-    return getattr(importlib.import_module(mod), fn)
+from .utils import *
 
 parsers = {entry.name: entry.load() for entry in importlib.metadata.entry_points()['downfile.parsers']}
 dumpers = {entry.name: entry.load() for entry in importlib.metadata.entry_points()['downfile.dumpers']}
 
-def type_names(t):
-    yield t.__module__ + "." + t.__name__
-    for b in t.__bases__:
-        for name in type_names(b):
-            yield name
-    yield "json"
-            
 class BufferedFile(zipfile.ZipFile):
     @contextlib.contextmanager
     def open_buffered(self, filename, mode="r", *arg, **kw):
         if mode == "w":
+            tmpname = None
             try:
                 with tempfile.NamedTemporaryFile(delete=False) as tmp:
                     tmpname = tmp.name
                     yield tmp
                 self.write(tmpname, filename)
             finally:
-                os.unlink(tmpname)
+                if tmpname: os.unlink(tmpname)
         elif mode == "r":
             tempdir = tempfile.mkdtemp()
             try:
@@ -61,7 +52,7 @@ class DownFile(BufferedFile):
         for typename in type_names(type(data)):
             if typename in dumpers:
                 return dumpers[typename](self, data)
-        assert False, "This should not happen. No JSON dumper registered?"
+        assert False, "Unknown datatype " + type(data).__module__ + "." + type(data).__name__
             
     def deserialize(self):
         return self.deserialize_data({"__jsonclass__": ["json", ["0.json"]]})["root"]

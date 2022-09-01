@@ -20,15 +20,32 @@ setuptools.setup(
     ],
     entry_points = {
         'downfile.dumpers': [
-            'json=downfile.formats.format_json:to_json',
+            'builtins.NoneType=downfile.formats.format_json:to_json',
+            'builtins.bool=downfile.formats.format_json:to_json',
+            'builtins.dict=downfile.formats.format_json:to_json',
+            'builtins.float=downfile.formats.format_json:to_json',
+            'builtins.int=downfile.formats.format_json:to_json',
+            'builtins.list=downfile.formats.format_json:to_json',
+            'builtins.str=downfile.formats.format_json:to_json',
+
+            'builtins.Exception=downfile.formats.format_exception:exception_to_json',
+            
             'datetime.datetime=downfile.formats.format_datetime:datetime_to_json',
             'datetime.date=downfile.formats.format_datetime:date_to_json',
+
+            'numpy.bool_=downfile.formats.format_numpy:coerce_numpy',
+            'numpy.int64=downfile.formats.format_numpy:coerce_numpy',
+            
             'pandas.core.frame.DataFrame=downfile.formats.format_pandas:to_feather',
         ],
         'downfile.parsers': [
             'json=downfile.formats.format_json:from_json',
+
+            'exception=downfile.formats.format_exception:exception_from_json',
+
             'datetime.datetime=downfile.formats.format_datetime:datetime_from_json',
             'datetime.date=downfile.formats.format_datetime:date_from_json',
+
             'feather=downfile.formats.format_pandas:from_feather',
         ],
     }

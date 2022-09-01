@@ -11,5 +11,17 @@ def to_json(downfile, data):
 def from_json(downfile, obj):
     obj = obj["__jsonclass__"][1][0]
     with downfile.open_buffered(obj, "r") as f:
-        return json.load(io.TextIOWrapper(f, "utf-8"), object_hook=downfile.deserialize_data)
+        try:
+            return json.load(io.TextIOWrapper(f, "utf-8"), object_hook=downfile.deserialize_data)
+        except Exception as e:
+            raise ValueError("Unable to parse JSON from " + obj) from e
 
+# These are NOT dumpers/loaders, but might be usefull in implementing other dumpers/loaders
+def to_json_string(downfile, data):
+    return json.dumps(data, default=downfile.serialize_data)
+
+def from_json_string(downfile, json_string):
+    try:
+        return json.loads(json_string, object_hook=downfile.deserialize_data)
+    except Exception as e:
+        raise ValueError("Unable to parse JSON: <" + json_string + ">") from e
