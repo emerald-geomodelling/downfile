@@ -13,6 +13,8 @@ def from_json(downfile, obj):
     with downfile.open_buffered(obj, "r") as f:
         try:
             return json.load(io.TextIOWrapper(f, "utf-8"), object_hook=downfile.deserialize_data)
+        except json.JSONDecodeError as e:
+            raise
         except Exception as e:
             raise ValueError("Unable to parse JSON from " + obj) from e
 
@@ -23,5 +25,7 @@ def to_json_string(downfile, data):
 def from_json_string(downfile, json_string):
     try:
         return json.loads(json_string, object_hook=downfile.deserialize_data)
+    except json.JSONDecodeError as e:
+        raise
     except Exception as e:
         raise ValueError("Unable to parse JSON: <" + json_string + ">") from e

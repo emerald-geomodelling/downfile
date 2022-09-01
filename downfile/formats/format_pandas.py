@@ -1,5 +1,6 @@
 import pandas as pd
 from . import format_json
+import json
 
 class CopyOnce(object):
     def __init__(self):
@@ -63,6 +64,13 @@ def from_feather(downfile, obj):
     # Handle columns with mixed value types
     obj_columns = [name for name, dtype in res.dtypes.items() if dtype == "O"]
     for col in obj_columns:
-        res[col] = res[col].apply(lambda v: format_json.from_json_string(downfile, v))
+        def decode_df_value(v):
+            if not isinstance(v, str): return v
+            try:
+                return format_json.from_json_string(downfile, v)
+            except json.JSONDecodeError:
+                # Allow pure string columns for backwards compatibility...
+                return v
+        res[col] = res[col].apply(decode_df_value)
         
     return res
