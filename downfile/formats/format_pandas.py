@@ -19,7 +19,7 @@ def to_feather(downfile, obj):
     
     # Feather files do not support fancy indices or columns, so store
     # them as separate feather files.
-    if not obj.index.equals(pd.RangeIndex.from_range(range(len(obj)))):
+    if not type(obj.index) is pd.RangeIndex or not obj.index.equals(pd.RangeIndex.from_range(range(len(obj)))):
         res["index_name"] = obj.index.name
         res["index"] = pd.DataFrame(index=obj.index).reset_index()
         obj = copy_once(obj).reset_index(drop=True)
