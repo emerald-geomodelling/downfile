@@ -21,6 +21,12 @@ Example usage:
  2    3,
  'fie': 'hello'}
  ```
+# Builtin support for datatypes
+
+* Python base types: int, float, bool, str, dict, list
+* Python builtin exceptions
+* Pandas DataFrames
+* Numpy arrays
 
 # How to add data types / formats
 
@@ -32,7 +38,7 @@ entry_points = {
         'somepackage.somemodule.DataType=mypackage.mymodule:dumper',
     ],
     'downfile.parsers': [
-        'myformat=mypackage.mymodule:parser',
+        'mypippackage.myformat=mypackage.mymodule:parser',
     ]}
 ```
 
@@ -40,10 +46,10 @@ then in `mypackage.mymodule` provide the following two methods
 
 ```
 def dumper(downfile, obj):
-    name = downfile.new_file("myformat") # myformat is the filename extension
+    name = downfile.new_file("mypippackage.myformat") # mypippackage.myformat is the filename extension
     with downfile.open_buffered(name, "w") as f:
         someFunctionToWriteObjToFile(f)
-    return {"__jsonclass__": ["myformat", [name]]} # myformat is the key used to find `parser` in setp.py later
+    return {"__jsonclass__": ["mypippackage.myformat", [name]]} # mypippackage.myformat is the key used to find `parser` in setp.py later
 
 def parser(downfile, obj):    
     obj = obj["__jsonclass__"][1][0]
@@ -51,7 +57,7 @@ def parser(downfile, obj):
         return someFunctionToReadObjFromFile(f)
 ```
 
-`myformat` can be any string that is reasonably unique, typically the file extension used by the file format your're using for serialization.
+`mypippackage.myformat` can be any string that is reasonably unique, typically the file extension used by the file format your're using for serialization. However, it is good practice to include the pip package name for your package, so that people can easily find out what packages are missing when failing to parse a file!
 
 If you're familiar with JSON RPC class hinting, you're probably wondering if dumper really has to write a file, or if it could just return some JSONifyable data. And the answer is nope, it doesn't need to write a file. If you're curious about serializing small objects, check out [the datetime handler](downfile/formats/format_datetime.py).
 
