@@ -30,7 +30,7 @@ Example usage:
 
 # How to add data types / formats
 
-In setup.py in your own package add:
+In `setup.py` in your own package (say `mypippackage`) add:
 
 ```
 entry_points = {
