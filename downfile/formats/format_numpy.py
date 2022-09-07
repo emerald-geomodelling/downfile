@@ -23,7 +23,7 @@ def to_npy(downfile, obj):
 def from_npy(downfile, obj):
     name = obj["__jsonclass__"][1][0]
     with downfile.open_buffered(name, "r") as f:
-        res = numpy.load(file, mmap_mode=None, allow_pickle=False)
+        res = numpy.load(f, allow_pickle=False)
 
     if res.dtype != bool and res.dtype != int and res.dtype != float:
         res = numpy.vectorize(lambda v: fformat_json.from_json_string(downfile, v))(res)
