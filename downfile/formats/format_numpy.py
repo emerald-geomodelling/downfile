@@ -1,4 +1,5 @@
 import numpy
+from . import format_json
 
 def coerce_numpy(downfile, data):
     if isinstance(data, numpy.bool_):
@@ -26,6 +27,6 @@ def from_npy(downfile, obj):
         res = numpy.load(f, allow_pickle=False)
 
     if res.dtype != bool and res.dtype != int and res.dtype != float:
-        res = numpy.vectorize(lambda v: fformat_json.from_json_string(downfile, v))(res)
+        res = numpy.vectorize(lambda v: format_json.from_json_string(downfile, v))(res)
 
     return res
