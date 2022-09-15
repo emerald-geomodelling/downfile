@@ -7,7 +7,7 @@ import os
 
 setuptools.setup(
     name='downfile',
-    version='0.0.3',
+    version='0.0.4',
     description='Serialize data as a zip file of json and other formats',
     long_description='Serialize data as a zip file of json and other formats',
     long_description_content_type="text/markdown",
