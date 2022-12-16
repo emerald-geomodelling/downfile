@@ -35,6 +35,7 @@ setuptools.setup(
             'datetime.date=downfile.formats.format_datetime:date_to_json',
 
             'numpy.bool_=downfile.formats.format_numpy:coerce_numpy',
+            'numpy.int32=downfile.formats.format_numpy:coerce_numpy',
             'numpy.int64=downfile.formats.format_numpy:coerce_numpy',
             'numpy.ndarray=downfile.formats.format_numpy:to_npy',
             'pandas.core.frame.DataFrame=downfile.formats.format_pandas:to_feather',
