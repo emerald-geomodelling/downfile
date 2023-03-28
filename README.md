@@ -76,5 +76,5 @@ The `downfile` argument to `dumper`/`parser` above is an instance of `downfile.D
   * The content of the `root` key is considered the content of the entire Downfile.
 * Any file inside a Downfile can reference additional files inside the Downfile using relative paths
 * Any JSON file inside a Downfile can use [JSON RPC 1.0 class hinting](https://www.jsonrpc.org/specification_v1#a3.JSONClasshinting)
-* A class hint of `{"__jsonclass__": ["file-format-name", ["filename.ext"]]}` must be used for data that is stored in a separate file inside the Downfile
+* A class hint of `{"__jsonclass__": ["mypippackage.myformat", ["filename.ext"]]}` must be used for data that is stored in a separate file inside the Downfile
 
