@@ -65,6 +65,8 @@ def parser(downfile, obj):
 
 If you're familiar with JSON RPC class hinting, you're probably wondering if dumper really has to write a file, or if it could just return some JSONifyable data. And the answer is nope, it doesn't need to write a file. If you're curious about serializing small objects, check out [the datetime handler](downfile/formats/format_datetime.py).
 
+To recursively encode some component value of the data you're encoding, you can use `downfile.formats.format_json.to_json_string(downfile, v)`. This will encode the value v to JSON, using the same class hinting structure used in the main JSON file, that is, allowing any complex type to be serialized as external files, and return the encoded JSON value.
+
 ## Downfile instances
 The `downfile` argument to `dumper`/`parser` above is an instance of `downfile.Downfile`, which is a subclass of `zipfile.ZipFile` that implements a few extra methods: `new_file(extension)` returns a new unique filename, `open_buffered(filename, mode="r"|"w")` works like `open()`, but uses a temporary file so that multiple files can be opened concurrently (`zipfile.ZipFile.open()` does not support this).
 
