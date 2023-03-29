@@ -78,3 +78,29 @@ The `downfile` argument to `dumper`/`parser` above is an instance of `downfile.D
 * Any JSON file inside a Downfile can use [JSON RPC 1.0 class hinting](https://www.jsonrpc.org/specification_v1#a3.JSONClasshinting)
 * A class hint of `{"__jsonclass__": ["mypippackage.myformat", ["filename.ext"]]}` must be used for data that is stored in a separate file inside the Downfile
 
+## Storage of datetimes and dates
+
+* Uses the class hints `{"__jsonclass__":["datetime.datetime", ["%Y-%m-%d %H:%M:%S"]]}` and `{"__jsonclass__": ["datetime.date", ["%Y-%m-%d"]]}`
+* Does not store any external file
+
+## Storage of exceptions
+
+* Uses the class hint `{"__jsonclass__":["exception"]}`
+* `args` property of the class hint object holds exception arguments
+* `type` property of the class hint object holds a list of string names for all classes in the inheritance list of the exception, most specific first. The names are prefixed with their respective module name.
+* Does not store any external file
+
+## Storage of Pandas DataFrames
+
+* Uses the class hint `{"__jsonclass__": ["feather", [name]]}`
+* Stored as a feather file
+* Any object column will have its cell values encoded as JSON with the same class hinting used for the main JSON file.
+* To allow for more complex columans and indices (e.g. multilevel, numeric columns etc) not supported by the feather format, columns and index can optionally be converted to dataframes and stored separately (using the same method)
+  * The index is stored in a property `index` on the class hint object, and its name in a property `index_name`
+  * The columns are stored in a property `columns` on the class hint object, and its name in a property `columns_name`
+ 
+ ## Storage of Numpy arrays
+ * Uses the class hint `{"__jsonclass__": ["npy", [name]]}`
+ * Stored as an `.npy`
+ * If dtype is `Object`, values are encoded as JSON with the same class hinting used for the main JSON file, meaning that the pickle based encoder of Numpy is never triggered.
+ 
