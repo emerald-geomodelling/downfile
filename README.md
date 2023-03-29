@@ -1,9 +1,9 @@
 # Downfile
 
-Downfile can be used to serialize any data from Python in a controlled manner. The data is stored as a set of components in a ZIP file.
-The format of each component is some standard format, such as JSON (for dictionaries etc) or Feather (for Pandas DataFrames).
+Downfile can be used to serialize any data from Python in a controlled manner. The data is stored as a set of components in a [ZIP file](https://en.wikipedia.org/wiki/ZIP_(file_format)).
+The format of each component is some standard format, such as [JSON](https://www.json.org/json-en.html) (for dictionaries etc) or [Feather](https://arrow.apache.org/docs/python/feather.html) (for Pandas DataFrames).
 
-To serialize or deserialize new types, methods can be registered using setuptools entry_points.
+To serialize or deserialize new types, methods can be registered using setuptools `entry_points`.
 
 Since a (de)serializer has to be written manually for each type, it does not have the same security and compatibility issues that Pickle has, but instead comes with a slightly higher development overhead.
 
@@ -95,7 +95,7 @@ The `downfile` argument to `dumper`/`parser` above is an instance of `downfile.D
 ## Storage of Pandas DataFrames
 
 * Uses the class hint `{"__jsonclass__": ["feather", [name]]}`
-* Stored as a feather file
+* Stored as a [Feather](https://arrow.apache.org/docs/python/feather.html) file
 * Any object column will have its cell values encoded as JSON with the same class hinting used for the main JSON file.
 * To allow for more complex columans and indices (e.g. multilevel, numeric columns etc) not supported by the feather format, columns and index can optionally be converted to dataframes and stored separately (using the same method)
   * The index is stored in a property `index` on the class hint object, and its name in a property `index_name`
@@ -103,6 +103,6 @@ The `downfile` argument to `dumper`/`parser` above is an instance of `downfile.D
  
  ## Storage of Numpy arrays
  * Uses the class hint `{"__jsonclass__": ["npy", [name]]}`
- * Stored as an `.npy`
+ * Stored as an [NPY](https://numpy.org/devdocs/reference/generated/numpy.lib.format.html) file
  * If dtype is `Object`, values are encoded as JSON with the same class hinting used for the main JSON file, meaning that the pickle based encoder of Numpy is never triggered.
  
