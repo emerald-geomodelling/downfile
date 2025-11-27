@@ -8,8 +8,14 @@ import tempfile
 import importlib.metadata
 from .utils import *
 
-parsers = {entry.name: entry.load() for entry in importlib.metadata.entry_points()['downfile.parsers']}
-dumpers = {entry.name: entry.load() for entry in importlib.metadata.entry_points()['downfile.dumpers']}
+#parsers = {entry.name: entry.load() for entry in importlib.metadata.entry_points()['downfile.parsers']}
+#dumpers = {entry.name: entry.load() for entry in importlib.metadata.entry_points()['downfile.dumpers']}
+
+from importlib.metadata import entry_points
+
+eps = entry_points()
+parsers = {entry.name: entry.load() for entry in importlib.metadata.entry_points(group='downfile.parsers')}
+dumpers = {entry.name: entry.load() for entry in importlib.metadata.entry_points(group='downfile.dumpers')}
 
 class BufferedFile(zipfile.ZipFile):
     @contextlib.contextmanager

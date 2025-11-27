@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools >= 61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "downfile"
+version = "0.0.4"
+description = "Serialize data as a zip file of json and other formats"
+readme = "README.md"  # Create if needed
+authors = [
+    {name = "Egil Moeller", email = "em@emrld.no"},
+]
+dependencies = [
+    "pandas",
+    "importlib-metadata",
+]
+[project.urls]
+Homepage = "https://github.com/emerald-geomodelling/downfile"
+
+[tool.setuptools.packages.find]
+include = ["*"]
