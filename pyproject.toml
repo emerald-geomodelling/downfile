@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "downfile"
-version = "0.0.4"
+version = "0.0.5"
 description = "Serialize data as a zip file of json and other formats"
 readme = "README.md"  # Create if needed
 authors = [
@@ -13,6 +13,7 @@ authors = [
 dependencies = [
     "pandas",
     "importlib-metadata",
+    "pyarrow"
 ]
 [project.urls]
 Homepage = "https://github.com/emerald-geomodelling/downfile"
